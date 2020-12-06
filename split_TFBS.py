@@ -48,7 +48,7 @@ def calc_outfile_name(TFBS_idx):
     resultfile_postfix = int(TFBS_idx/titleline_number)+1
     format_str = '{:0'+s_resultfile_postfix_length+'d}'
     s_formatted_resultfile_postfix = format_str.format(resultfile_postfix)
-    s_resultfile_name = './out/'+prefix+'_'+s_formatted_resultfile_postfix+'.txt'
+    s_resultfile_name = './out/'+prefix+'_'+s_formatted_resultfile_postfix
     return s_resultfile_name
 
 
@@ -58,16 +58,16 @@ if __name__ == '__main__':
     source_file, prefix, titleline_number = command_parser(sys.argv)
 
     TFBS_list = read_source_file_content(source_file)
-
     titleline_list = get_titleline_name(TFBS_list)
-    with open(prefix+'_name.txt', 'w+') as f:
-        for titleline in titleline_list:
-            f.write(titleline)
+
 
     resultfile_total_number = int(len(TFBS_list)/titleline_number)+1
     # 10^3=1000 but len('1000')=4, so int(log10(n))+1
     s_resultfile_postfix_length = str(int(math.log10(resultfile_total_number))+1)
+    
     for TFBS_idx in range(len(TFBS_list)):
         s_resultfile_name = calc_outfile_name(TFBS_idx)
-        with open(s_resultfile_name, 'a+') as f:
+        with open(s_resultfile_name + '.txt', 'a+') as f:
             f.write(TFBS_list[TFBS_idx])
+        with open(s_resultfile_name + '_name.txt', 'a+') as f:
+            f.write(titleline_list[TFBS_idx])
